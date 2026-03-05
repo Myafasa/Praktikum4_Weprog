@@ -9,8 +9,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
     exit;
 }
 
-include_once '../config/Database.php';
-include_once '../models/Anime.php';
+include_once '../config/database.php';
+include_once '../models/anime.php';
 
 $database = new Database();
 $db       = $database->getConnection();
