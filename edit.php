@@ -1,5 +1,8 @@
 <?php
-include 'config/Database.php';
+include 'config/database.php';
+
+$database = new Database();
+$pdo      = $database->getConnection();
 
 $id = $_GET['id'] ?? null;
 

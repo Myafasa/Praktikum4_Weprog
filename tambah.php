@@ -1,5 +1,8 @@
 <?php
-include 'config/Database.php';
+include 'config/database.php';
+
+$database = new database();
+$pdo      = $database->getConnection();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $judul   = $_POST['judul'];
