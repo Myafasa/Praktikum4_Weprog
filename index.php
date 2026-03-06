@@ -1,5 +1,5 @@
 <?php
-require 'connection.php';
+include 'config/Database.php';
 
 $id = $_GET['id'] ?? null;
 
