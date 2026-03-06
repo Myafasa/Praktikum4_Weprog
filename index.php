@@ -23,9 +23,9 @@ $anime = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <span class="brand-icon">▶</span>
                 <span class="brand-text">Mini<strong>AnimeList</strong></span>
             </div>
-            <nav class="navbar-menu">
+            <nav class="navbar-links">
                 <a href="index.php" class="nav-link active">Home</a>
-                <a href="create.php" class="nav-link">Add Anime</a>
+                <a href="tambah.php" class="btn-add-nav">+ Add Anime</a>
             </nav>
             </div>
         </div>
@@ -67,7 +67,7 @@ $anime = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <main class="main-content">
         <div class="container">
 
-            <a href="create.php" class="card add-card">
+            <a href="tambah.php" class="card add-card">
                 <div class="add-icon">+</div>
                 <span class="add-label">Add New Anime</span>
             </a>
@@ -113,8 +113,8 @@ $anime = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
 
                     <div class="actions">
-                        <a href="update.php?id=<?= $row['id']; ?>" class="btn-edit">✎ Edit</a>
-                        <a href="delete.php?id=<?= $row['id']; ?>" class="btn-delete" onclick="return confirm('Hapus anime ini?')">✕ Delete</a>
+                        <a href="edit.php?id=<?= $row['id']; ?>" class="btn-edit">✎ Edit</a>
+                        <a href="hapus.php?id=<?= $row['id']; ?>" class="btn-delete" onclick="return confirm('Hapus anime ini?')">✕ Delete</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -140,26 +140,33 @@ $anime = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         cards.sort((a, b) => {
             if (sortBy === 'rating') {
+                // Descending: highest rating first
                 return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
             } else if (sortBy === 'title') {
+                // Ascending: A → Z
                 return a.dataset.title.localeCompare(b.dataset.title);
             } else if (sortBy === 'status') {
+                // Custom order: Watching → Completed → Plan to Watch → Dropped
                 const order = { 'watching': 0, 'completed': 1, 'plan to watch': 2, 'dropped': 3 };
                 return (order[a.dataset.status] ?? 9) - (order[b.dataset.status] ?? 9);
             } else if (sortBy === 'type') {
+                // Ascending: A → Z
                 return a.dataset.type.localeCompare(b.dataset.type);
             }
             return 0;
         });
 
+        // Re-append: add-card stays first, then sorted anime cards
         container.innerHTML = '';
         container.appendChild(addCard);
         cards.forEach((card, i) => {
+            // Update rank badge
             const badge = card.querySelector('.rank-badge');
             if (badge) badge.textContent = '#' + (i + 1);
 
+            // Replay fade-in animation
             card.style.animation = 'none';
-            card.offsetHeight; 
+            card.offsetHeight; // force reflow
             card.style.animation = '';
             card.style.animationDelay = (i * 0.05) + 's';
 
