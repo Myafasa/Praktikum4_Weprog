@@ -1,42 +1,5 @@
 <?php
 include 'config/Database.php';
-
-$id = $_GET['id'] ?? null;
-
-if (!$id) {
-    header("Location: index.php");
-    exit;
-}
-
-$stmt = $pdo->prepare("SELECT * FROM anime WHERE id = ?");
-$stmt->execute([$id]);
-$data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$data) {
-    die("Data tidak ditemukan.");
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    $judul   = $_POST['judul'];
-    $type = $_POST['type'];
-    $genre   = $_POST['genre'];
-    $studio  = $_POST['studio'];
-    $rating  = $_POST['rating'];
-    $status  = $_POST['status'];
-    $episode = $_POST['episode'];
-
-    $sql = "UPDATE anime 
-            SET judul = ?, type = ?, genre = ?, studio = ?, rating = ?, status = ?, episode = ?
-            WHERE id = ?";
-
-    $stmt = $pdo->prepare($sql);
-
-    if ($stmt->execute([$judul, $type, $genre, $studio, $rating, $status, $episode, $id])) {
-        header("Location: index.php");
-        exit;
-    }
-}
 ?>
 
 <!DOCTYPE html>
